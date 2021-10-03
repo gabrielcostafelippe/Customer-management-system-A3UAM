@@ -1,0 +1,472 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h>
+
+typedef struct
+{
+	char nome[30];
+	int existe, ano;
+	float montante;
+} Clientes;
+Clientes cliente[11];
+
+typedef struct
+{
+	char nome[30];
+	int existe, ano;
+	float montante;
+} Dados;
+Dados ordem[11];
+
+
+void menu();
+void registrar();
+void remover();
+void zerar();
+void listarmelhor();
+void montante();
+void abort();
+void atualizar();
+void lista();
+
+int main(int argc, char *argv[]) 
+{
+	setlocale(LC_ALL, "Portuguese");
+	menu();
+	return 0;
+}
+
+
+void menu()
+{
+	int op,op2;
+
+	do
+	{
+		system("cls");
+		printf("-----------Sistema de gerenciamento de clientes-----------\n\n");
+		printf("1- Registrar novo cliente\n2- Remover cliente\n3- Listar clientes\n4- Exibir montante de um cliente\n5- Exibir melhor comprador\n6- Atualizar montante de compras de um cliente\n7- Zerar montantes do mês\n0- Sair\n\n");	
+		printf("Digite o número da operação que deseja realizar: ");
+		scanf("%d",&op);
+		getchar();
+		switch(op)
+		{
+			case 1:
+				printf("\nTem certeza que deseja registrar um novo cliente?\n1-Sim\n0-Nao, voltar\n\n");
+				printf("Digite o número da operação que deseja realizar: ");
+				scanf("%d",&op2);
+				getchar();
+				switch(op2)
+				{
+					case 1:
+						if(cliente[1].existe==1 && cliente[2].existe==1 && cliente[3].existe==1 && cliente[4].existe==1 && cliente[5].existe==1 && cliente[6].existe==1 && cliente[7].existe==1 && cliente[8].existe==1 && cliente[9].existe==1 && cliente[10].existe==1)
+						{
+							system("cls");
+							printf("-----------Cadastrar de Clientes-----------\n");							
+							printf("\nImpossivel registrar novo cliente, o sistema está cheio.\n\nSe quiser cadastrar um novo cliente, é necessario que exclua um que já existe\n\nAperte Enter para voltar ao menu principal\n");
+							getchar();	
+						}
+						else
+						registrar();	
+					break;
+					
+					case 0:
+					break;
+					}
+				
+			break;
+			
+			case 2:
+				remover();
+			break;
+			
+			case 3:
+				lista();
+			break;
+			
+			case 4:
+				montante();
+			break;
+			
+			case 5:
+				listarmelhor();
+			break;
+			
+			case 6:
+				atualizar();
+			break;
+				
+			case 7:
+				zerar();
+			break;
+									
+			case 0:
+				abort();
+			break;
+		}	
+	}while(op!=0);
+}
+
+
+void registrar()
+{
+	char nome[30];
+	int ano,i,op;
+	float montante;
+	
+	system("cls");
+	printf("-----------Registrar cliente-----------\n\n");
+	printf("Digite o nome do cliente: ");
+	fgets(nome,sizeof(nome),stdin);
+	printf("\nDigite o ano de nascimento do cliente: ");
+	scanf("%d",&ano);
+	printf("\nDigite o montante atual do cliente: ");
+	scanf("%f",&montante);
+	getchar();
+	for(i=1;i<11;i++)
+	{
+		if(cliente[i].existe==0)
+		{
+			strcpy(cliente[i].nome, nome);
+			cliente[i].ano = ano;
+			cliente[i].montante = montante;
+			cliente[i].existe=1;
+			break;
+		}
+	}
+	printf("\n\nCliente registrado com sucesso!\n\nDeseja Registrar um novo cliente?\n1- Sim\n0- Não, voltar\n\n");
+	printf("Digite o número da operação que deseja realizar: ");
+	scanf("%d",&op);
+	getchar();
+	switch(op)
+	{
+		case 1:
+			registrar();
+		break;
+		
+		case 0:
+			menu();
+		break;
+	}
+
+}
+
+
+void remover()
+{
+	int i, op;
+	char nome[30];
+	
+	system("cls");
+	printf("-----------Remoção clientes-----------\n\n");
+	if(cliente[1].existe==0 && cliente[2].existe==0 && cliente[3].existe==0 && cliente[4].existe==0 && cliente[5].existe==0 && cliente[6].existe==0 && cliente[7].existe==0 && cliente[8].existe==0 && cliente[9].existe==0 && cliente[10].existe==0)
+	{
+		printf("\nVocê não possui nenhum cliente registrado\n\nAperte Enter para voltar ao menu principal\n\n");
+		getchar();
+	}
+	else
+	{
+		for(i=1;i<11;i++)
+		{
+			if(cliente[i].existe==1)	
+			{
+				printf("\n               -Registro: %d-\n\nNome: %sAno de nascimento: %d\nMontante: %.2f\n--------------------------------------\n", i, cliente[i].nome, cliente[i].ano, cliente[i].montante);
+			}
+		}
+		printf("\n\nDigite o nome do cliente que deseja remover: ");
+		fgets(nome,sizeof(nome),stdin);
+		for(i=1;i<11;i++)
+		{
+			if(strstr(cliente[i].nome,nome)!=NULL)
+			{
+			cliente[i].existe=0;	
+			cliente[i].montante=0;
+			printf("\nCliente removido com sucesso!\nAperte Enter para voltar ao menu principal\n");
+			getchar();
+			menu();
+			}
+		}	
+		printf("\nNão há nenhum cliente com esse nome.\n1- Tentar outro nome\n2- Voltar ao menu\n");
+		printf("Digite o número da operação que deseja realizar: ");
+		scanf("%d",&op);
+		getchar();
+		switch(op)
+		{
+			case 1:
+				remover();
+			break;
+				
+			case 2:
+				menu();
+			break;
+		}
+			
+
+	}
+}
+
+
+void lista()
+{
+	int registro, i, op;
+	system("cls");
+	printf("-----------Lista de clientes-----------\n\n");
+	if(cliente[1].existe==0 && cliente[2].existe==0 && cliente[3].existe==0 && cliente[4].existe==0 && cliente[5].existe==0 && cliente[6].existe==0 && cliente[7].existe==0 && cliente[8].existe==0 && cliente[9].existe==0 && cliente[10].existe==0)
+	{
+		printf("\nVocê não possui nenhum cliente registrado\n\nAperte Enter para voltar ao menu principal\n\n");
+		getchar();
+	}
+	else
+	{
+		for(i=1;i<11;i++)
+		{
+			if(cliente[i].existe==1)	
+			{
+				printf("\n               -Registro: %d-\n\nNome: %sAno de nascimento: %d\nMontante: %.2f\n--------------------------------------\n", i, cliente[i].nome, cliente[i].ano, cliente[i].montante);
+			}
+		}
+		printf("\nAperte Enter para voltar ao menu principal\n");
+		getchar();
+	}
+}
+
+
+void listarmelhor()
+{
+	int contador, i2, i;
+	for(contador = 1; contador < 11; contador++)
+	{
+		for(i2 = 1; i2 < 10; i2++)
+		{
+			if(cliente[i2].montante < cliente[i2+1].montante)
+			{
+				strcpy(ordem[i2].nome, cliente[i2].nome);
+				ordem[i2].montante = cliente[i2].montante;
+				ordem[i2].ano = cliente[i2].ano;
+				ordem[i2].existe = cliente[i2].existe;
+					
+				strcpy(cliente[i2].nome, cliente[i2+1].nome);
+				cliente[i2].montante = cliente[i2+1].montante;
+				cliente[i2].ano = cliente[i2+1].ano;
+				cliente[i2].existe = cliente[i2+1].existe;
+					
+				strcpy(cliente[i2+1].nome, ordem[i2].nome);
+				cliente[i2+1].montante = ordem[i2].montante;
+				cliente[i2+1].ano = ordem[i2].ano;
+				cliente[i2+1].existe = ordem[i2].existe;
+			}
+		}
+	}
+	system("cls");
+	if(cliente[1].montante==0 && cliente[2].montante==0 && cliente[3].montante==0 && cliente[4].montante==0 && cliente[5].montante==0 && cliente[6].montante==0 && cliente[7].montante==0 && cliente[8].montante==0 && cliente[9].montante==0 && cliente[10].montante==0)
+	{
+		printf("-----------Melhores compradores-----------\n\n");
+		printf("Todos os montantes estão zerados, portanto, não há um melhor comprador.\n");
+	}else
+	{
+		printf("-----------Melhores compradores-----------\n\n");
+		printf("Nome: %s\n", cliente[1].nome);
+		printf("Valor do montante: R$:%.2f\n",cliente[1].montante);
+		for(i=2;i<11;i++)
+		{
+			if(cliente[1].montante == cliente[i].montante && cliente[i].existe == 1)
+			{
+				printf("--------------------------------------------------------\n");
+				printf("\nNome: %s\nValor do montante: R$:%.2f\n\n", cliente[i].nome, cliente[i].montante);
+			}
+		}
+	}
+	printf("--------------------------------------------------------\n\n");
+	printf("\nAperte Enter para voltar ao menu principal\n");
+	getchar();
+}
+
+
+void zerar()
+{
+	int i;
+	for(i = 1; i < 11; i++)
+	{
+		cliente[i].montante = 0;
+	}
+	system("cls");
+	printf("Os montantes foram zerados com sucesso\n");
+	printf("\nAperte Enter para voltar ao menu principal\n");
+	getchar();	
+}
+
+
+void montante()
+{
+	char nome[30];
+	int op,i;
+	
+	system("cls");
+	printf("-----------Exibir montante de um cliente-----------\n\n");
+	if(cliente[1].existe==0 && cliente[2].existe==0 && cliente[3].existe==0 && cliente[4].existe==0 && cliente[5].existe==0 && cliente[6].existe==0 && cliente[7].existe==0 && cliente[8].existe==0 && cliente[9].existe==0 && cliente[10].existe==0)
+	{
+		printf("\nVocê não possui nenhum cliente registrado\n\nAperte Enter para voltar ao menu principal\n\n");
+		getchar();
+	}
+	else
+	{
+		printf("                Clientes registrados:               \n\n");
+		for(i=1;i<11;i++)
+		{
+			if(cliente[i].existe==1)
+			{
+				printf("%d- %s\n", i, cliente[i].nome);
+			}
+		}
+		printf("--------------------------------------------------------\n");
+		printf("\nDigite o nome do cliente na qual deseja verificar o montante: ");
+		fgets(nome,sizeof(nome),stdin);
+		for(i=1;i<11;i++)
+		{
+			if(strstr(cliente[i].nome,nome)!=NULL)
+			{
+				system("cls");
+				printf("-----------Exibir montante de um cliente-----------\n\n");
+				printf("\n\nMontante de %sR$:%.2f\n\n", cliente[i].nome, cliente[i].montante);
+				printf("--------------------------------------------------------\n");
+				printf("\n\nDeseja pesquisar pelo montante de outro cliente?\n1- Sim\n0- Não, voltar ao menu\n\n");
+				printf("Digite o número da operação que deseja realizar: ");
+				scanf("%d",&op);
+				getchar();
+				switch(op)
+				{
+					case 1:
+						montante();
+					break;
+					
+					case 0:
+						menu();
+					break;
+				}
+			}
+		}
+		printf("\n\nNenhum cliente foi encontrado com esse nome. Deseja pesquisar por outro nome?\n1- Sim\n0- Não, voltar ao menu\n\n");
+		printf("Digite o número da operação que deseja realizar: ");
+		scanf("%d",&op);
+		getchar();
+		switch(op)
+		{
+			case 1:
+				montante();
+			break;
+					
+			case 0:
+				menu();
+			break;
+		}
+	}
+}
+
+
+void atualizar()
+{
+	int i, op, op2;
+	float somador, novo;
+	char nome[30];
+	
+	system("cls");
+	printf("-----------Atualizar montante de um cliente-----------\n\n");
+	if(cliente[1].existe==0 && cliente[2].existe==0 && cliente[3].existe==0 && cliente[4].existe==0 && cliente[5].existe==0 && cliente[6].existe==0 && cliente[7].existe==0 && cliente[8].existe==0 && cliente[9].existe==0 && cliente[10].existe==0)
+	{
+		printf("\nVocê não possui nenhum cliente registrado\n\nAperte Enter para voltar ao menu principal\n\n");
+		getchar();
+	}else
+	{
+		printf("                Clientes registrados:               \n\n");
+		for(i=1;i<11;i++)
+		{
+			if(cliente[i].existe==1)
+			{
+				printf("%d- %sMontante: R$:%.2f\n", i, cliente[i].nome, cliente[i].montante);
+				printf("--------------------------------------------------------\n");				
+			}
+		}
+		printf("\nDigite o nome do cliente na qual deseja atualizar o montante: ");
+		fgets(nome,sizeof(nome),stdin);	
+		for(i=1;i<11;i++)
+		{
+			if(strstr(cliente[i].nome,nome)!=NULL)
+			{
+				system("cls");
+				printf("-----------Atualizar montante de um cliente-----------\n\n");
+				printf("\n\nMontante de %sR$:%.2f", cliente[i].nome, cliente[i].montante);
+				printf("\n--------------------------------------------------------\n");
+				printf("\n\nDe que forma deseja atualizar o montante?\n1- Somando um valor\n2- Registrando outro valor\n\n");
+				printf("Digite o número da operação que deseja realizar: ");
+				scanf("%d",&op);
+				getchar();
+				switch(op)
+				{
+					case 1:
+						printf("\nInsira o valor a somar: ");
+						scanf("%f",&somador);
+						getchar();
+						cliente[i].montante = cliente[i].montante + somador;
+						system("cls");
+						printf("-----------Atualizar montante de um cliente-----------\n\n");
+						printf("\nMontante atualizado com sucesso, o novo valor do montante de %sR$:%.2f", cliente[i].nome, cliente[i].montante);
+						printf("\n\nDeseja atualizar o montante de outro cliente?\n1- Sim\n0- Não, voltar ao menu\n\n");
+						printf("Digite o número da operação que deseja realizar: ");
+						scanf("%d",&op2);
+						getchar();
+						switch(op2)
+						{
+							case 1:
+								atualizar();
+							break;
+							
+							case 0:
+								menu();
+							break;
+						}
+					break;
+					
+					case 2:
+						printf("\nInsira o novo valor a registrar: ");
+						scanf("%f",&novo);
+						getchar();
+						cliente[i].montante = novo;
+						system("cls");
+						printf("-----------Atualizar montante de um cliente-----------\n\n");
+						printf("\nMontante atualizado com sucesso, o novo valor do montante de %sR$:%.2f", cliente[i].nome, cliente[i].montante);
+						printf("\n\nDeseja atualizar o montante de outro cliente?\n1- Sim\n0- Não, voltar ao menu\n\n");
+						printf("Digite o número da operação que deseja realizar: ");
+						scanf("%d",&op2);
+						getchar();
+						switch(op2)
+						{
+							case 1:
+								atualizar();
+							break;
+							
+							case 0:
+								menu();
+							break;
+						}
+					break;
+				}
+				
+			}
+		}
+		printf("\n\nNenhum cliente foi encontrado com esse nome. Deseja pesquisar por outro nome?\n1- Sim\n0- Não, voltar ao menu\n\n");
+		printf("Digite o número da operação que deseja realizar: ");
+		scanf("%d",&op);
+		getchar();
+		switch(op)
+		{
+			case 1:
+				atualizar();
+			break;
+					
+			case 0:
+				menu();
+			break;
+		}
+	}
+}
